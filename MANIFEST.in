@@ -1,0 +1,7 @@
+include CONTRIBUTING.md
+include README.rst
+include AUTHORS
+include LICENSE
+include requirements*.txt
+recursive-include birdcage *.py
+recursive-include tests *.py
