@@ -13,6 +13,9 @@ Django Birdcage
 .. image:: https://img.shields.io/pypi/l/django-birdcage.svg
     :target: https://github.com/pybee/django-birdcage/blob/master/LICENSE
 
+.. image:: https://travis-ci.org/freakboy3742/django-birdcage.svg?branch=master
+    :target: https://travis-ci.org/freakboy3742/django-birdcage
+
 When deploying large websites, operations teams will sometimes deploy new code across a subset of the entire collection of webservers. This approach is called a "Canary" deployment. Most users will continue to be served using the old code; only those users hitting a "Canary" machine will see the new code.
 
 Large websites will often use a Canary when the perceived risk of an upgrade is high. For example, upgrading the Django version from 1.8 LTS to 1.11 LTS on a complex site will generally be considered a risky upgrade; a Canary will be used to test that the upgrade is working as expected before switching all webservers over to the upgraded codebase.
