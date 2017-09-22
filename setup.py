@@ -23,7 +23,7 @@ setup(
     long_description=long_description,
     author='Russell Keith-Magee',
     author_email='russell@keith-magee.com',
-    url='http://github.com/freakboy3742/birdcage',
+    url='http://github.com/freakboy3742/django-birdcage',
     keywords=['birdcage', 'Django', 'compatibility'],
     packages=find_packages(exclude=['tests']),
     install_requires=[],

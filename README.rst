@@ -31,7 +31,7 @@ Django 1.10 `introduced a change to CSRF handling <https://docs.djangoproject.co
 
 To address this problem, Birdcage provides a version of Django 1.8's CsrfViewMiddleware that can interpret Django 1.10's CSRF tokens.
 
-* In the settings for your Django 1.8 codebase, replace `django.middleware.csrf.CsrfViewMiddleware` in your `MIDDLEWARE` setting with `birdcage.csrf.CsrfViewMiddleware`.
+* In the settings for your Django 1.8 codebase, replace ``django.middleware.csrf.CsrfViewMiddleware`` in your ``MIDDLEWARE`` setting with ``birdcage.v1_11.csrf.CsrfViewMiddleware``.
 
 * In your Django 1.10+ codebase, continue to use the Django CsrfViewMiddleware.
 
