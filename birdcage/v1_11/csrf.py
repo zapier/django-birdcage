@@ -17,7 +17,10 @@ import string
 from django.conf import settings
 from django.utils.crypto import constant_time_compare
 from django.utils.encoding import force_text
-from django.middleware.csrf import _get_new_csrf_key, same_origin, constant_time_compare, CsrfViewMiddleware
+from django.middleware.csrf import (
+    _get_new_csrf_key, same_origin, constant_time_compare,
+    CsrfViewMiddleware as BaseCsrfViewMiddleware
+)
 from django.utils.six.moves import zip
 
 REASON_NO_REFERER = "Referer checking failed - no Referer."
@@ -58,7 +61,7 @@ def _sanitize_token(token):
     return _get_new_csrf_key()
 
 
-class ForwardCompatibleCsrfViewMiddleware(CsrfViewMiddleware):
+class CsrfViewMiddleware(BaseCsrfViewMiddleware):
     def process_view(self, request, callback, callback_args, callback_kwargs):
 
         if getattr(request, 'csrf_processing_done', False):
