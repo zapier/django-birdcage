@@ -5,7 +5,7 @@ import logging
 
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse
-from django.middleware.csrf import CSRF_KEY_LENGTH, CsrfViewMiddleware
+from django.middleware.csrf import CSRF_KEY_LENGTH
 from django.template import RequestContext, Template
 from django.template.context_processors import csrf
 from django.test import TestCase, override_settings, ignore_warnings
@@ -14,8 +14,10 @@ from django.views.decorators.csrf import (
     csrf_exempt, ensure_csrf_cookie, requires_csrf_token,
 )
 
+from birdcage.v1_11.csrf import CsrfViewMiddleware
 
-# Response/views used for CsrfResponseMiddleware and CsrfViewMiddleware tests
+
+# Response/views used for CsrfViewMiddleware tests
 def post_form_response():
     resp = HttpResponse(content="""
 <html><body><h1>\u00a1Unicode!<form method="post"><input type="text" /></form></body></html>
@@ -56,10 +58,7 @@ class TestingHttpRequest(HttpRequest):
 
 
 class CsrfViewMiddlewareTest(TestCase):
-    # The csrf token is potentially from an untrusted source, so could have
-    # characters that need dealing with.
-    _csrf_id_cookie = b"<1>\xc2\xa1"
-    _csrf_id = "1"
+    _csrf_id = _csrf_id_cookie = '1bcdefghij2bcdefghij3bcdefghij4b'
 
     def _get_GET_no_csrf_cookie_request(self):
         return TestingHttpRequest()
@@ -98,7 +97,21 @@ class CsrfViewMiddlewareTest(TestCase):
         resp = token_view(req)
         resp2 = CsrfViewMiddleware().process_response(req, resp)
         csrf_cookie = resp2.cookies.get(settings.CSRF_COOKIE_NAME, False)
+
+    def test_process_view_v1_10_cookie(self):
+        """
+        Check that if the token is a v1.10 CSRF cookie, it is unsalted.
+        """
+        req = self._get_GET_no_csrf_cookie_request()
+        # This cookie value is a salted version of the _csrf_id_cookie
+        req.COOKIES[settings.CSRF_COOKIE_NAME] = 'oPAoU3nYmtfVPGL6HUzC8wh35xEKlvR8fQCrY8t5uC7WRJPbN1HL1xj69CKRtEL9'
+        CsrfViewMiddleware().process_view(req, token_view, (), {})
+        resp = token_view(req)
+        resp2 = CsrfViewMiddleware().process_response(req, resp)
+        csrf_cookie = resp2.cookies.get(settings.CSRF_COOKIE_NAME, False)
         self.assertEqual(len(csrf_cookie.value), CSRF_KEY_LENGTH)
+
+        self.assertEqual(csrf_cookie.value, self._csrf_id_cookie)
 
     def test_process_response_get_token_used(self):
         """
@@ -471,7 +484,9 @@ class CsrfViewMiddlewareTest(TestCase):
 
             POST = property(_get_post, _set_post)
 
-        token = 'ABC'
+        # Set a token that is the right length, but a
+        # different value to the "correct" token.
+        token = 'B4JIHGFEDCB3JIHGFEDCB2JIHGFEDCB1'
 
         req = CsrfPostRequest(token, raise_error=False)
         resp = CsrfViewMiddleware().process_view(req, post_form_view, (), {})

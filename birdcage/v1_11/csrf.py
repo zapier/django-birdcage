@@ -24,7 +24,7 @@ from django.middleware.csrf import (
 from django.utils.six.moves import zip
 
 REASON_NO_REFERER = "Referer checking failed - no Referer."
-REASON_BAD_REFERER = "Referer checking failed - %s does not match any trusted origins."
+REASON_BAD_REFERER = "Referer checking failed - %s does not match %s."
 REASON_NO_CSRF_COOKIE = "CSRF cookie not set."
 REASON_BAD_TOKEN = "CSRF token missing or incorrect."
 
