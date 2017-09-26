@@ -13,8 +13,8 @@ Django Birdcage
 .. image:: https://img.shields.io/pypi/l/django-birdcage.svg
     :target: https://github.com/pybee/django-birdcage/blob/master/LICENSE
 
-.. image:: https://travis-ci.org/freakboy3742/django-birdcage.svg?branch=master
-    :target: https://travis-ci.org/freakboy3742/django-birdcage
+.. image:: https://travis-ci.org/zapier/django-birdcage.svg?branch=master
+    :target: https://travis-ci.org/zapier/django-birdcage
 
 When deploying large websites, operations teams will sometimes deploy new code across a subset of the entire collection of webservers. This approach is called a "Canary" deployment. Most users will continue to be served using the old code; only those users hitting a "Canary" machine will see the new code.
 
